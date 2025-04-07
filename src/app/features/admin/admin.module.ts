@@ -1,11 +1,22 @@
+// src/app/features/admin/admin.module.ts
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { AdminComponent } from './admin.component';
+import { UserManagementComponent } from './user-management/user-management.component';
+import { AuditLogsComponent } from './audit-logs/audit-logs.component';
 
 const routes: Routes = [
   {
     path: '',
-    component: AdminComponent
+    redirectTo: 'users',
+    pathMatch: 'full'
+  },
+  {
+    path: 'users',
+    component: UserManagementComponent
+  },
+  {
+    path: 'audit',
+    component: AuditLogsComponent
   }
 ];
 

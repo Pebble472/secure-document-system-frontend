@@ -14,6 +14,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatDividerModule } from '@angular/material/divider';
+import { MatIcon } from '@angular/material/icon';
 
 @Component({
   selector: 'app-main-layout',
@@ -95,17 +96,31 @@ import { MatDividerModule } from '@angular/material/divider';
   `]
 })
 export class MainLayoutComponent implements OnInit {
-  private authService = inject(AuthService);
-  private router = inject(Router);
-  
-  username: string = '';
+  username: string = 'Loading...';
   isAdmin = false;
   isEditor = false;
 
+  constructor(private authService: AuthService) {}
+
   ngOnInit(): void {
-    this.username = this.authService.getUsername();
+    // First, check if user is logged in
+    this.authService.isLoggedIn().then(loggedIn => {
+      if (loggedIn) {
+        // Get user information
+        this.authService.getUser().subscribe(user => {
+          if (user) {
+            this.username = user.username || 'Unknown';
+            this.checkRoles();
+          }
+        });
+      }
+    });
+  }
+
+  private checkRoles(): void {
     this.isAdmin = this.authService.hasRole('ADMIN');
     this.isEditor = this.authService.hasRole('EDITOR');
+    console.log('User roles:', { isAdmin: this.isAdmin, isEditor: this.isEditor });
   }
 
   logout(): void {
