@@ -363,10 +363,11 @@ export class DocumentListComponent implements OnInit {
       width: '500px',
       data: { folderId: this.currentFolderId }
     });
-
+  
     dialogRef.afterClosed().subscribe(result => {
+      console.log('Upload dialog result:', result);
       if (result) {
-        // Reload documents after successful upload
+        console.log('Reloading document list after upload');
         this.loadContent();
       }
     });
@@ -470,6 +471,7 @@ export class DocumentListComponent implements OnInit {
       return (size / (1024 * 1024 * 1024)).toFixed(2) + ' GB';
     }
   }
+
   
   getDocumentIcon(contentType: string): string {
     if (!contentType) return 'insert_drive_file';
